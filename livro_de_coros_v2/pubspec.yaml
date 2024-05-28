@@ -21,4 +21,10 @@ flutter:
   
   assets:
     - assets/songs.json
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-Regular.ttf
+        - asset: assets/fonts/OpenSans-Bold.ttf
+        - asset: assets/fonts/OpenSans-SemiBold.ttf
 

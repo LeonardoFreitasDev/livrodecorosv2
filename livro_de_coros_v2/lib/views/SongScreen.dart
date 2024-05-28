@@ -17,19 +17,27 @@ class _SongScreenState extends State<SongScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.song.titulo),
+        title: Text(
+            '${widget.song.numero.toString() + '. ' + widget.song.titulo}'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: widget.song.letra.map((item) {
-            return Center(
-              child: Text(
-                item,
-                style: TextStyle(fontSize: _fontSize),
-              ),
-            );
-          }).toList(),
+      body: Scrollbar(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: widget.song.letra.map((line) {
+                return Text(
+                  line,
+                  style: TextStyle(
+                    fontSize: _fontSize,
+                    // fontFamily: 'OpenSans',
+                    // fontWeight: FontWeight.bold,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
         ),
       ),
 
@@ -52,7 +60,7 @@ class _SongScreenState extends State<SongScreen> {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton.small(
+          ElevatedButton(
             child: Text('-'),
             onPressed: () => {
               setState(() {
@@ -60,7 +68,7 @@ class _SongScreenState extends State<SongScreen> {
               }),
             },
           ),
-          FloatingActionButton.small(
+          ElevatedButton(
             child: Text('+'),
             onPressed: () => {
               setState(() {
