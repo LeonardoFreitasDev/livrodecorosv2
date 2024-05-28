@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:livro_de_coros_v2/views/SongListView.dart';
 
 void main() {

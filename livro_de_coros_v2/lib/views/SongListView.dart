@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -17,16 +18,13 @@ class _SongListViewState extends State<SongListView> {
   @override
   void initState() {
     super.initState();
-    // loadJsonData();
     _initializeAppData();
   }
 
   Future<void> _initializeAppData() async {
-    // Verifica se o arquivo songs.json já existe no diretório de documentos
     bool songsFileExists = await _checkSongsFileExists();
 
     if (!songsFileExists) {
-      // Se o arquivo não existir, copia-o do diretório assets para o diretório de documentos
       await _copySongsFileToDocumentsDirectory();
     }
 
@@ -70,7 +68,6 @@ class _SongListViewState extends State<SongListView> {
     }
   }
 
-  // Função para salvar os dados no arquivo JSON
   Future<void> saveSongsToJson(List<Song> songs) async {
     try {
       // Obter o diretório de documentos do aplicativo
@@ -88,7 +85,6 @@ class _SongListViewState extends State<SongListView> {
     }
   }
 
-  // Função para atualizar o estado de favorito de um Song e salvar os dados atualizados no arquivo JSON
   Future<void> updateSongFavorite(Song song, List<Song> songList) async {
     // Carregar as músicas existentes do arquivo JSON
     List<Song> songs = await songList;
@@ -107,53 +103,65 @@ class _SongListViewState extends State<SongListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text('Livro de Coros'),
+        title: const Center(
+          child: Text(
+            'Músicas',
+          ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: songList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('Nº ${songList[index].numero.toString()}. '),
-                Flexible(
+      body: Scrollbar(
+        child: ListView.builder(
+          itemCount: songList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: songList[index].favorito == true
+                    ? Color(0x33D4006C)
+                    : Colors.white,
+              ),
+              margin: EdgeInsets.all(3.0),
+              child: ListTile(
+                title: Flexible(
                   child: Text(
-                    songList[index].titulo,
+                    'Nº ${'${songList[index].numero} - ${songList[index].titulo}'}',
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                    maxLines: 1,
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-              ],
-            ),
-            subtitle: Text('${songList[index].letra[0].toString()}...'),
-            trailing: IconButton(
-              icon: Icon(
-                songList[index].favorito == true
-                    ? Icons.favorite
-                    : Icons.favorite_border,
-                color:
-                    songList[index].favorito == true ? Colors.red : Colors.grey,
-              ),
-              onPressed: () {
-                setState(() {
-                  // songList[index].favorito = !songList[index].favorito;
-                  updateSongFavorite(songList[index], songList);
-                });
-              },
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SongScreen(song: songList[index]),
+                subtitle: Text(
+                  '${songList[index].letra[0].toString()}...',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
-              );
-            },
-          );
-        },
+                trailing: IconButton(
+                  icon: Icon(
+                    songList[index].favorito == true
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: songList[index].favorito == true
+                        ? Colors.red
+                        : Colors.grey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      updateSongFavorite(songList[index], songList);
+                    });
+                  },
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SongScreen(song: songList[index]),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
