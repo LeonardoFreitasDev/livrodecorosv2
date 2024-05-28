@@ -25,4 +25,15 @@ class Song {
       tags: List<String>.from(json['tags']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'numero': numero,
+      'titulo': titulo,
+      'letra': letra,
+      'favorito': favorito,
+      'tags': tags,
+    };
+  }
 }
