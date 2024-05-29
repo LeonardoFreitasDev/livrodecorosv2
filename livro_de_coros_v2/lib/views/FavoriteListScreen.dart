@@ -1,4 +1,3 @@
-// ignore: file_names
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -7,9 +6,9 @@ import '../views/SongScreen.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FavoriteListScreen extends StatefulWidget {
-  List<Song> songList = [];
+  final List<Song> songList;
 
-  FavoriteListScreen({super.key, required this.songList});
+  const FavoriteListScreen({super.key, required this.songList});
 
   @override
   State<FavoriteListScreen> createState() => _FavoriteListScreenState();
@@ -29,13 +28,14 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
       // Escrever os dados JSON de volta no arquivo
       await file.writeAsString(json.encode(jsonData));
     } catch (e) {
+      // ignore: avoid_print
       print('Erro ao salvar músicas no arquivo JSON: $e');
     }
   }
 
   Future<void> updateSongFavorite(Song song, List<Song> songList) async {
     // Carregar as músicas existentes do arquivo JSON
-    List<Song> songs = await songList;
+    List<Song> songs = songList;
 
     // Encontrar o índice do Song na lista
     int songIndex = songs.indexWhere((element) => element.id == song.id);
@@ -59,16 +59,16 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: widget.songList[index].favorito == true
-                          ? Color(0x33D4006C)
+                          ? const Color(0x33D4006C)
                           : Colors.white,
                     ),
-                    margin: EdgeInsets.all(3.0),
+                    margin: const EdgeInsets.all(3.0),
                     child: ListTile(
                       title: Text(
                         'Nº ${'${widget.songList[index].numero} - ${widget.songList[index].titulo}'}',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
                         '${widget.songList[index].letra[0].toString()}...',
@@ -102,7 +102,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
                       },
                     ),
                   )
-                : SizedBox();
+                : const SizedBox();
           },
         ),
       ),

@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 class SongListScreen extends StatefulWidget {
   final List<Song> songList;
 
-  SongListScreen({super.key, required this.songList});
+  const SongListScreen({super.key, required this.songList});
 
   @override
   State<SongListScreen> createState() => _SongListScreenState();

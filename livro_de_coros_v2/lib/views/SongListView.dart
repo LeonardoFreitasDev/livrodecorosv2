@@ -9,7 +9,10 @@ import 'FavoriteListScreen.dart';
 import 'SongListScreen.dart';
 
 class SongListView extends StatefulWidget {
+  const SongListView({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SongListViewState createState() => _SongListViewState();
 }
 
@@ -83,10 +86,18 @@ class _SongListViewState extends State<SongListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Livro de Coros',
+        title: TextField(
+          enabled: false,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.search),
+            iconColor: Colors.white,
+            hintText: 'Pesquisar...',
+            border: InputBorder.none,
+            fillColor: Colors.white,
           ),
+          onChanged: (value) {
+            // Adicione aqui a lógica para realizar a busca em tempo real
+          },
         ),
       ),
       body: _isSongListLoaded
@@ -97,7 +108,7 @@ class _SongListViewState extends State<SongListView> {
                 FavoriteListScreen(songList: songList),
               ],
             )
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -110,7 +121,7 @@ class _SongListViewState extends State<SongListView> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF00BCD4),
+        selectedItemColor: const Color(0xFF00BCD4),
         onTap: _onItemTapped,
       ),
     );

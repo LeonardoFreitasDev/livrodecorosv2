@@ -24,18 +24,20 @@ class _SongScreenState extends State<SongScreen> {
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: widget.song.letra.map((line) {
-                return Text(
-                  line,
-                  style: TextStyle(
-                    fontSize: _fontSize,
-                    // fontFamily: 'OpenSans',
-                    // fontWeight: FontWeight.bold,
-                  ),
-                );
-              }).toList(),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: widget.song.letra.map((line) {
+                  return Text(
+                    line,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: _fontSize,
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ),

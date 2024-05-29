@@ -5,7 +5,8 @@ void main() {
   runApp(MaterialApp(
     home: SongListView(),
     theme: ThemeData(
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
+        foregroundColor: Color(0xFFFFFFFF),
         backgroundColor: Color(0xFF00BCD4),
       ),
     ),
