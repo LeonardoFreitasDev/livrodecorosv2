@@ -50,13 +50,6 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Favoritas',
-          ),
-        ),
-      ),
       body: Scrollbar(
         child: ListView.builder(
           itemCount: widget.songList.length,
@@ -71,13 +64,12 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
                     ),
                     margin: EdgeInsets.all(3.0),
                     child: ListTile(
-                      title: Flexible(
-                          child: Text(
+                      title: Text(
                         'Nº ${'${widget.songList[index].numero} - ${widget.songList[index].titulo}'}',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
+                      ),
                       subtitle: Text(
                         '${widget.songList[index].letra[0].toString()}...',
                         overflow: TextOverflow.ellipsis,
@@ -110,7 +102,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
                       },
                     ),
                   )
-                : Text('Você não adicinou nenhuma música favorita.');
+                : SizedBox();
           },
         ),
       ),

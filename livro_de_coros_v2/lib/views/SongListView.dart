@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 import '../models/Song.dart';
-import '../views/SongScreen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'FavoriteListScreen.dart';
 import 'SongListScreen.dart';
@@ -16,6 +15,7 @@ class SongListView extends StatefulWidget {
 
 class _SongListViewState extends State<SongListView> {
   List<Song> songList = [];
+  List<Song> songListFavorite = [];
 
   int _selectedIndex = 0;
 
@@ -63,6 +63,8 @@ class _SongListViewState extends State<SongListView> {
       List<Song> songs = jsonData.map((data) => Song.fromJson(data)).toList();
       setState(() {
         songList = songs;
+        songListFavorite =
+            songs.where((song) => song.favorito == true).toList();
       });
     }
   }
@@ -78,40 +80,16 @@ class _SongListViewState extends State<SongListView> {
     }
   }
 
-  // Future<void> saveSongsToJson(List<Song> songs) async {
-  //   try {
-  //     // Obter o diretório de documentos do aplicativo
-  //     Directory directory = await getApplicationDocumentsDirectory();
-  //     File file = File('${directory.path}/songs.json');
-
-  //     // Converter a lista de músicas para JSON
-  //     List<Map<String, dynamic>> jsonData =
-  //         songs.map((song) => song.toJson()).toList();
-
-  //     // Escrever os dados JSON de volta no arquivo
-  //     await file.writeAsString(json.encode(jsonData));
-  //   } catch (e) {
-  //     print('Erro ao salvar músicas no arquivo JSON: $e');
-  //   }
-  // }
-
-  // Future<void> updateSongFavorite(Song song, List<Song> songList) async {
-  //   // Carregar as músicas existentes do arquivo JSON
-  //   List<Song> songs = await songList;
-
-  //   // Encontrar o índice do Song na lista
-  //   int songIndex = songs.indexWhere((element) => element.id == song.id);
-
-  //   // Atualizar o estado de favorito do Song
-  //   songs[songIndex].favorito = !songs[songIndex].favorito;
-
-  //   // Salvar os dados atualizados no arquivo JSON
-  //   await saveSongsToJson(songs);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text(
+            'Favoritas',
+          ),
+        ),
+      ),
       body: IndexedStack(
         index: _selectedIndex,
         children: [
@@ -131,88 +109,9 @@ class _SongListViewState extends State<SongListView> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Color(0xFF00BCD4),
         onTap: _onItemTapped,
       ),
     );
   }
 }
-
-// @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Center(
-//           child: Text(
-//             'Músicas',
-//           ),
-//         ),
-//       ),
-//       body: Scrollbar(
-//         child: ListView.builder(
-//           itemCount: songList.length,
-//           itemBuilder: (BuildContext context, int index) {
-//             return Container(
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(10),
-//                 color: songList[index].favorito == true
-//                     ? Color(0x33D4006C)
-//                     : Colors.white,
-//               ),
-//               margin: EdgeInsets.all(3.0),
-//               child: ListTile(
-//                 title: Flexible(
-//                   child: Text(
-//                     'Nº ${'${songList[index].numero} - ${songList[index].titulo}'}',
-//                     overflow: TextOverflow.ellipsis,
-//                     maxLines: 1,
-//                     style: TextStyle(fontWeight: FontWeight.bold),
-//                   ),
-//                 ),
-//                 subtitle: Text(
-//                   '${songList[index].letra[0].toString()}...',
-//                   overflow: TextOverflow.ellipsis,
-//                   maxLines: 1,
-//                 ),
-//                 trailing: IconButton(
-//                   icon: Icon(
-//                     songList[index].favorito == true
-//                         ? Icons.favorite
-//                         : Icons.favorite_border,
-//                     color: songList[index].favorito == true
-//                         ? Colors.red
-//                         : Colors.grey,
-//                   ),
-//                   onPressed: () {
-//                     setState(() {
-//                       updateSongFavorite(songList[index], songList);
-//                     });
-//                   },
-//                 ),
-//                 onTap: () {
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (context) => SongScreen(song: songList[index]),
-//                     ),
-//                   );
-//                 },
-//               ),
-//             );
-//           },
-//         ),
-//       ),
-//       bottomNavigationBar: BottomNavigationBar(
-//         items: const [
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.audiotrack_sharp),
-//             label: 'Músicas',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.favorite_sharp),
-//             label: 'Favoritas',
-//           ),
-//         ],
-//       ),
-//     );
-//   }

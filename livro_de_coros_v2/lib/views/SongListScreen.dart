@@ -50,16 +50,9 @@ class _SongListScreenState extends State<SongListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Músicas',
-          ),
-        ),
-      ),
       body: Scrollbar(
         child: ListView.builder(
-          itemCount: widget.songList.length,
+          itemCount: 303,
           itemBuilder: (BuildContext context, int index) {
             return Container(
               decoration: BoxDecoration(
@@ -70,13 +63,11 @@ class _SongListScreenState extends State<SongListScreen> {
               ),
               margin: EdgeInsets.all(3.0),
               child: ListTile(
-                title: Flexible(
-                  child: Text(
-                    'Nº ${'${widget.songList[index].numero} - ${widget.songList[index].titulo}'}',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                title: Text(
+                  'Nº ${'${widget.songList[index].numero} - ${widget.songList[index].titulo}'}',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
                   '${widget.songList[index].letra[0].toString()}...',
