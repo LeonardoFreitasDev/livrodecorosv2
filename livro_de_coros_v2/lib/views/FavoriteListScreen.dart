@@ -7,7 +7,7 @@ import '../views/SongScreen.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FavoriteListScreen extends StatefulWidget {
-  List<Song> songList;
+  List<Song> songList = [];
 
   FavoriteListScreen({super.key, required this.songList});
 

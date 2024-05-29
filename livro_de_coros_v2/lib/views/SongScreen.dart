@@ -40,22 +40,6 @@ class _SongScreenState extends State<SongScreen> {
           ),
         ),
       ),
-
-      // ListView.builder(
-      //   itemCount: widget.song.letra.length,
-      //   itemBuilder: (context, index) {
-      //     return ListTile(
-      //         title: Text(
-      //       widget.song.letra[index],
-      //       style: TextStyle(
-      //         fontSize: _fontSize,
-      //         fontWeight: FontWeight.bold,
-      //       ),
-      //       softWrap: true,
-      //       textAlign: TextAlign.center,
-      //     ));
-      //   },
-      // ),
       floatingActionButton: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,

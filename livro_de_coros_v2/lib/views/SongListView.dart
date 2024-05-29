@@ -15,9 +15,9 @@ class SongListView extends StatefulWidget {
 
 class _SongListViewState extends State<SongListView> {
   List<Song> songList = [];
-  List<Song> songListFavorite = [];
 
   int _selectedIndex = 0;
+  bool _isSongListLoaded = false;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -63,8 +63,7 @@ class _SongListViewState extends State<SongListView> {
       List<Song> songs = jsonData.map((data) => Song.fromJson(data)).toList();
       setState(() {
         songList = songs;
-        songListFavorite =
-            songs.where((song) => song.favorito == true).toList();
+        _isSongListLoaded = true;
       });
     }
   }
@@ -86,17 +85,19 @@ class _SongListViewState extends State<SongListView> {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Favoritas',
+            'Livro de Coros',
           ),
         ),
       ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          SongListScreen(songList: songList),
-          FavoriteListScreen(songList: songList),
-        ],
-      ),
+      body: _isSongListLoaded
+          ? IndexedStack(
+              index: _selectedIndex,
+              children: [
+                SongListScreen(songList: songList),
+                FavoriteListScreen(songList: songList),
+              ],
+            )
+          : Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

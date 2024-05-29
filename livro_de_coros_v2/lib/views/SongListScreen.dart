@@ -16,6 +16,20 @@ class SongListScreen extends StatefulWidget {
 }
 
 class _SongListScreenState extends State<SongListScreen> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   Future<void> saveSongsToJson(List<Song> songs) async {
     try {
       // Obter o diretório de documentos do aplicativo
@@ -47,11 +61,47 @@ class _SongListScreenState extends State<SongListScreen> {
     await saveSongsToJson(songs);
   }
 
+  void _showModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Este é um modal!',
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    // Fechar o modal quando o botão for pressionado
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Fechar Modal'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Scrollbar(
+        thumbVisibility: true,
+        thickness: 5,
+        radius: const Radius.elliptical(5, 5),
+        interactive: true,
         child: ListView.builder(
+          controller: _scrollController,
           itemCount: 303,
           itemBuilder: (BuildContext context, int index) {
             return Container(
@@ -99,10 +149,24 @@ class _SongListScreenState extends State<SongListScreen> {
                     ),
                   );
                 },
+                onLongPress: () {
+                  _showModal(context);
+                },
               ),
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Rola a lista de volta para o topo
+          _scrollController.animateTo(
+            0.0,
+            duration: Duration(milliseconds: 50),
+            curve: Curves.linear,
+          );
+        },
+        child: Icon(Icons.arrow_upward),
       ),
     );
   }
