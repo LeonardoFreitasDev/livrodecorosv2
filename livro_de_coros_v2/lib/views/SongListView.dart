@@ -18,7 +18,7 @@ class SongListView extends StatefulWidget {
 
 class _SongListViewState extends State<SongListView> {
   List<Song> songList = [];
-  List<Song> filteredSongs = [];
+  List<Song> filteredList = [];
 
   int _selectedIndex = 0;
   bool _isSongListLoaded = false;
@@ -67,7 +67,7 @@ class _SongListViewState extends State<SongListView> {
       List<Song> songs = jsonData.map((data) => Song.fromJson(data)).toList();
       setState(() {
         songList = songs;
-        filteredSongs = songList;
+        filteredList = List.from(songList);
         _isSongListLoaded = true;
       });
     }
@@ -84,12 +84,22 @@ class _SongListViewState extends State<SongListView> {
     }
   }
 
+  void _filterSongs(String searchText) {
+    setState(() {
+      filteredList = songList
+          .where((song) =>
+              song.numero.toString().contains(searchText) ||
+              song.titulo.toLowerCase().contains(searchText.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          enabled: false,
+          enabled: true,
           decoration: const InputDecoration(
             icon: Icon(Icons.search),
             iconColor: Colors.white,
@@ -98,18 +108,7 @@ class _SongListViewState extends State<SongListView> {
             fillColor: Colors.white,
           ),
           onChanged: (value) {
-            if (value.isEmpty) {
-              setState(() {
-                filteredSongs = songList;
-              });
-            } else {
-              filteredSongs = songList
-                  .where((song) =>
-                      song.titulo.toLowerCase().contains(value.toLowerCase()) ||
-                      song.numero.toString().contains(value.toLowerCase()))
-                  .toList();
-              setState(() {});
-            }
+            _filterSongs(value);
           },
         ),
       ),
@@ -117,7 +116,8 @@ class _SongListViewState extends State<SongListView> {
           ? IndexedStack(
               index: _selectedIndex,
               children: [
-                SongListScreen(songList: songList),
+                SongListScreen(
+                    filteredList: filteredList, originalSongList: songList),
                 FavoriteListScreen(songList: songList),
               ],
             )

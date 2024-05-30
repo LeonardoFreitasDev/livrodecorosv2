@@ -7,9 +7,11 @@ import '../views/SongScreen.dart';
 import 'package:path_provider/path_provider.dart';
 
 class SongListScreen extends StatefulWidget {
-  final List<Song> songList;
+  final List<Song> filteredList;
+  final List<Song> originalSongList;
 
-  const SongListScreen({super.key, required this.songList});
+  const SongListScreen(
+      {super.key, required this.filteredList, required this.originalSongList});
 
   @override
   State<SongListScreen> createState() => _SongListScreenState();
@@ -47,18 +49,48 @@ class _SongListScreenState extends State<SongListScreen> {
     }
   }
 
-  Future<void> updateSongFavorite(Song song, List<Song> songList) async {
+  Future<void> updateSongFavorite(Song song, List<Song> filteredList) async {
+    // List<Song> songs = await filteredList;
+    // List<Song> originalSongs = await widget.originalSongList;
+
+    // // Encontrar o índice do Song na lista filtrada
+    // int songIndex = songs.indexWhere((element) => element.id == song.id);
+
+    // // Se o índice for encontrado na lista filtrada
+    // if (songIndex != -1) {
+    //   // Atualizar o estado de favorito na lista filtrada
+    //   songs[songIndex].favorito = !songs[songIndex].favorito;
+
+    //   // Encontrar o índice correspondente na lista original
+    //   int originalIndex =
+    //       originalSongs.indexWhere((element) => element.id == song.id);
+
+    //   // Se o índice for encontrado na lista original
+    //   if (originalIndex != -1) {
+    //     // Atualizar o estado de favorito na lista original
+    //     originalSongs[originalIndex].favorito = songs[songIndex].favorito;
+
+    //     // Salvar os dados atualizados no arquivo JSON
+    //     // await saveSongsToJson(originalSongs);
+    //   }
+    // }
+
     // Carregar as músicas existentes do arquivo JSON
-    List<Song> songs = await songList;
+    List<Song> songs = await filteredList;
+    List<Song> originalSongs = List.from(await widget.originalSongList);
 
     // Encontrar o índice do Song na lista
     int songIndex = songs.indexWhere((element) => element.id == song.id);
+    int originalIndex =
+        originalSongs.indexWhere((element) => element.id == song.id);
 
     // Atualizar o estado de favorito do Song
     songs[songIndex].favorito = !songs[songIndex].favorito;
+    originalSongs[originalIndex].favorito =
+        originalSongs[originalIndex].favorito;
 
     // Salvar os dados atualizados no arquivo JSON
-    await saveSongsToJson(songs);
+    // await saveSongsToJson(originalSongs);
   }
 
   void _showModal(BuildContext context) {
@@ -102,41 +134,41 @@ class _SongListScreenState extends State<SongListScreen> {
         interactive: true,
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: 303,
+          itemCount: widget.filteredList.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: widget.songList[index].favorito == true
+                color: widget.filteredList[index].favorito == true
                     ? Color(0x33D4006C)
                     : Colors.white,
               ),
               margin: EdgeInsets.all(3.0),
               child: ListTile(
                 title: Text(
-                  'Nº ${'${widget.songList[index].numero} - ${widget.songList[index].titulo}'}',
+                  'Nº ${'${widget.filteredList[index].numero} - ${widget.filteredList[index].titulo}'}',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  '${widget.songList[index].letra[0].toString()}...',
+                  '${widget.filteredList[index].letra[0].toString()}...',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
                 trailing: IconButton(
                   icon: Icon(
-                    widget.songList[index].favorito == true
+                    widget.filteredList[index].favorito == true
                         ? Icons.favorite
                         : Icons.favorite_border,
-                    color: widget.songList[index].favorito == true
+                    color: widget.filteredList[index].favorito == true
                         ? Colors.red
                         : Colors.grey,
                   ),
                   onPressed: () {
                     setState(() {
                       updateSongFavorite(
-                          widget.songList[index], widget.songList);
+                          widget.filteredList[index], widget.filteredList);
                     });
                   },
                 ),
@@ -145,7 +177,7 @@ class _SongListScreenState extends State<SongListScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          SongScreen(song: widget.songList[index]),
+                          SongScreen(song: widget.filteredList[index]),
                     ),
                   );
                 },
@@ -162,7 +194,7 @@ class _SongListScreenState extends State<SongListScreen> {
           // Rola a lista de volta para o topo
           _scrollController.animateTo(
             0.0,
-            duration: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 50),
             curve: Curves.linear,
           );
         },
