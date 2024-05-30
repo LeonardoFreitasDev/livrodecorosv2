@@ -162,7 +162,7 @@ class _SongListScreenState extends State<SongListScreen> {
           // Rola a lista de volta para o topo
           _scrollController.animateTo(
             0.0,
-            duration: Duration(milliseconds: 50),
+            duration: Duration(milliseconds: 500),
             curve: Curves.linear,
           );
         },

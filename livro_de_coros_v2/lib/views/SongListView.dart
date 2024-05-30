@@ -18,6 +18,7 @@ class SongListView extends StatefulWidget {
 
 class _SongListViewState extends State<SongListView> {
   List<Song> songList = [];
+  List<Song> filteredSongs = [];
 
   int _selectedIndex = 0;
   bool _isSongListLoaded = false;
@@ -66,6 +67,7 @@ class _SongListViewState extends State<SongListView> {
       List<Song> songs = jsonData.map((data) => Song.fromJson(data)).toList();
       setState(() {
         songList = songs;
+        filteredSongs = songList;
         _isSongListLoaded = true;
       });
     }
@@ -96,7 +98,18 @@ class _SongListViewState extends State<SongListView> {
             fillColor: Colors.white,
           ),
           onChanged: (value) {
-            // Adicione aqui a lógica para realizar a busca em tempo real
+            if (value.isEmpty) {
+              setState(() {
+                filteredSongs = songList;
+              });
+            } else {
+              filteredSongs = songList
+                  .where((song) =>
+                      song.titulo.toLowerCase().contains(value.toLowerCase()) ||
+                      song.numero.toString().contains(value.toLowerCase()))
+                  .toList();
+              setState(() {});
+            }
           },
         ),
       ),
