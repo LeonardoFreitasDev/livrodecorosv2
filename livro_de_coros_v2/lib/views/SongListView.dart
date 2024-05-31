@@ -67,7 +67,7 @@ class _SongListViewState extends State<SongListView> {
       List<Song> songs = jsonData.map((data) => Song.fromJson(data)).toList();
       setState(() {
         songList = songs;
-        filteredList = List.from(songList);
+        filteredList = songList;
         _isSongListLoaded = true;
       });
     }
@@ -119,7 +119,8 @@ class _SongListViewState extends State<SongListView> {
               children: [
                 SongListScreen(
                     filteredList: filteredList, originalSongList: songList),
-                FavoriteListScreen(songList: songList),
+                FavoriteListScreen(
+                    filteredList: filteredList, originalSongList: songList),
               ],
             )
           : const Center(child: CircularProgressIndicator()),

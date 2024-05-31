@@ -26,11 +26,11 @@ class _SongScreenState extends State<SongScreen> {
             padding: EdgeInsets.all(10),
             child: Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: widget.song.letra.map((line) {
                   return Text(
                     line,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                     softWrap: true,
                     style: TextStyle(
                       fontSize: _fontSize,
