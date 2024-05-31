@@ -50,44 +50,44 @@ class _SongListScreenState extends State<SongListScreen> {
   }
 
   Future<void> updateSongFavorite(Song song, List<Song> filteredList) async {
-    // List<Song> songs = await filteredList;
-    // List<Song> originalSongs = await widget.originalSongList;
+    List<Song> songs = await filteredList;
+    List<Song> originalSongs = await widget.originalSongList;
 
-    // // Encontrar o índice do Song na lista filtrada
-    // int songIndex = songs.indexWhere((element) => element.id == song.id);
+    // Encontrar o índice do Song na lista filtrada
+    int songIndex = songs.indexWhere((element) => element.id == song.id);
 
-    // // Se o índice for encontrado na lista filtrada
-    // if (songIndex != -1) {
-    //   // Atualizar o estado de favorito na lista filtrada
-    //   songs[songIndex].favorito = !songs[songIndex].favorito;
+    // Se o índice for encontrado na lista filtrada
+    if (songIndex != -1) {
+      // Atualizar o estado de favorito na lista filtrada
+      songs[songIndex].favorito = !songs[songIndex].favorito;
 
-    //   // Encontrar o índice correspondente na lista original
-    //   int originalIndex =
-    //       originalSongs.indexWhere((element) => element.id == song.id);
+      // Encontrar o índice correspondente na lista original
+      int originalIndex =
+          originalSongs.indexWhere((element) => element.id == song.id);
 
-    //   // Se o índice for encontrado na lista original
-    //   if (originalIndex != -1) {
-    //     // Atualizar o estado de favorito na lista original
-    //     originalSongs[originalIndex].favorito = songs[songIndex].favorito;
+      // Se o índice for encontrado na lista original
+      if (originalIndex != -1) {
+        // Atualizar o estado de favorito na lista original
+        originalSongs[originalIndex].favorito = songs[songIndex].favorito;
 
-    //     // Salvar os dados atualizados no arquivo JSON
-    //     // await saveSongsToJson(originalSongs);
-    //   }
-    // }
+        // Salvar os dados atualizados no arquivo JSON
+        // await saveSongsToJson(originalSongs);
+      }
+    }
 
     // Carregar as músicas existentes do arquivo JSON
-    List<Song> songs = await filteredList;
-    List<Song> originalSongs = List.from(await widget.originalSongList);
+    // List<Song> songs = await filteredList;
+    // List<Song> originalSongs = List.from(await widget.originalSongList);
 
-    // Encontrar o índice do Song na lista
-    int songIndex = songs.indexWhere((element) => element.id == song.id);
-    int originalIndex =
-        originalSongs.indexWhere((element) => element.id == song.id);
+    // // Encontrar o índice do Song na lista
+    // int songIndex = songs.indexWhere((element) => element.id == song.id);
+    // int originalIndex =
+    //     originalSongs.indexWhere((element) => element.id == song.id);
 
-    // Atualizar o estado de favorito do Song
-    songs[songIndex].favorito = !songs[songIndex].favorito;
-    originalSongs[originalIndex].favorito =
-        originalSongs[originalIndex].favorito;
+    // // Atualizar o estado de favorito do Song
+    // songs[songIndex].favorito = !songs[songIndex].favorito;
+    // originalSongs[originalIndex].favorito =
+    //     originalSongs[originalIndex].favorito;
 
     // Salvar os dados atualizados no arquivo JSON
     // await saveSongsToJson(originalSongs);

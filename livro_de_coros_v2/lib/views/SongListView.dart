@@ -86,11 +86,12 @@ class _SongListViewState extends State<SongListView> {
 
   void _filterSongs(String searchText) {
     setState(() {
-      filteredList = songList
-          .where((song) =>
-              song.numero.toString().contains(searchText) ||
-              song.titulo.toLowerCase().contains(searchText.toLowerCase()))
-          .toList();
+      filteredList = songList.where((song) {
+        return song.numero.toString().contains(searchText) ||
+            song.titulo.toLowerCase().contains(searchText.toLowerCase()) ||
+            song.letra.any((lyrics) =>
+                lyrics.toLowerCase().contains(searchText.toLowerCase()));
+      }).toList();
     });
   }
 
