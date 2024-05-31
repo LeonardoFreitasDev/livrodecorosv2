@@ -56,7 +56,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
         originalSongs[originalIndex].favorito = songs[songIndex].favorito;
 
         // Salvar os dados atualizados no arquivo JSON
-        // await saveSongsToJson(originalSongs);
+        await saveSongsToJson(originalSongs);
       }
     }
   }
@@ -64,62 +64,81 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Scrollbar(
-        child: ListView.builder(
-          itemCount: widget.filteredList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return widget.filteredList[index].favorito == true
-                ? Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: widget.filteredList[index].favorito == true
-                          ? const Color(0x33D4006C)
-                          : Colors.white,
-                    ),
-                    margin: const EdgeInsets.all(3.0),
-                    child: ListTile(
-                      title: Text(
-                        'Nº ${'${widget.filteredList[index].numero} - ${widget.filteredList[index].titulo}'}',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        '${widget.filteredList[index].letra[0].toString()}...',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      trailing: IconButton(
-                        icon: Icon(
-                          widget.filteredList[index].favorito == true
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: widget.filteredList[index].favorito == true
-                              ? Colors.red
-                              : Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            updateSongFavorite(widget.filteredList[index],
-                                widget.filteredList);
-                          });
-                        },
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                SongScreen(song: widget.filteredList[index]),
+      body: widget.filteredList.isNotEmpty &&
+              widget.originalSongList.any((song) => song.favorito)
+          ? Scrollbar(
+              child: ListView.builder(
+                itemCount: widget.filteredList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return widget.filteredList[index].favorito == true
+                      ? Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: widget.filteredList[index].favorito == true
+                                ? const Color(0x33D4006C)
+                                : Colors.white,
                           ),
-                        );
-                      },
-                    ),
-                  )
-                : const SizedBox();
-          },
-        ),
-      ),
+                          margin: const EdgeInsets.all(3.0),
+                          child: ListTile(
+                            title: Text(
+                              'Nº ${'${widget.filteredList[index].numero} - ${widget.filteredList[index].titulo}'}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              '${widget.filteredList[index].letra[0].toString()}...',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(
+                                widget.filteredList[index].favorito == true
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color:
+                                    widget.filteredList[index].favorito == true
+                                        ? Colors.red
+                                        : Colors.grey,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  updateSongFavorite(widget.filteredList[index],
+                                      widget.filteredList);
+                                });
+                              },
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SongScreen(
+                                    song: widget.filteredList[index],
+                                    songList: widget.originalSongList,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : const SizedBox();
+                },
+              ),
+            )
+          : const Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.heart_broken),
+                  Text(
+                    'Você ainda não adicionou nenhum favorito',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }

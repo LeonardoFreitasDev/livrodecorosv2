@@ -71,7 +71,7 @@ class _SongListScreenState extends State<SongListScreen> {
         originalSongs[originalIndex].favorito = songs[songIndex].favorito;
 
         // Salvar os dados atualizados no arquivo JSON
-        // await saveSongsToJson(originalSongs);
+        await saveSongsToJson(originalSongs);
       }
     }
 
@@ -176,8 +176,10 @@ class _SongListScreenState extends State<SongListScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          SongScreen(song: widget.filteredList[index]),
+                      builder: (context) => SongScreen(
+                        song: widget.filteredList[index],
+                        songList: widget.originalSongList,
+                      ),
                     ),
                   );
                 },

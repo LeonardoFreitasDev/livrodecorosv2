@@ -99,15 +99,18 @@ class _SongListViewState extends State<SongListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 70,
         title: TextField(
           enabled: true,
           decoration: const InputDecoration(
-            icon: Icon(Icons.search),
-            iconColor: Colors.white,
-            hintText: 'Pesquisar...',
-            border: InputBorder.none,
-            fillColor: Colors.white,
-          ),
+              suffixIcon: Icon(Icons.search),
+              hintText: 'Pesquisar',
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+              ),
+              filled: true,
+              fillColor: Colors.white),
           onChanged: (value) {
             _filterSongs(value);
           },

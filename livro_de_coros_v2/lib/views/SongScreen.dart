@@ -3,15 +3,16 @@ import '../models/Song.dart';
 
 class SongScreen extends StatefulWidget {
   final Song song;
+  final List<Song> songList;
 
-  SongScreen({required this.song});
+  const SongScreen({super.key, required this.song, required this.songList});
 
   @override
   State<SongScreen> createState() => _SongScreenState();
 }
 
 class _SongScreenState extends State<SongScreen> {
-  double _fontSize = 16.0;
+  double _fontSize = 20.0;
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +25,19 @@ class _SongScreenState extends State<SongScreen> {
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(10),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: widget.song.letra.map((line) {
-                  return Text(
-                    line,
-                    textAlign: TextAlign.left,
-                    softWrap: true,
-                    style: TextStyle(
-                      fontSize: _fontSize,
-                    ),
-                  );
-                }).toList(),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: widget.song.letra.map((line) {
+                return Text(
+                  line,
+                  textAlign: TextAlign.left,
+                  softWrap: true,
+                  style: TextStyle(
+                    fontSize: _fontSize,
+                  ),
+                );
+              }).toList(),
             ),
           ),
         ),
